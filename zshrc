@@ -1,36 +1,35 @@
 ### OPTIONS ###
 setopt \
-        always_last_prompt \
-        append_history \
-        auto_cd \
-        auto_list \
-        auto_menu \
-        auto_param_keys \
-        auto_param_slash \
-        auto_pushd \
-        complete_in_word \
-        extended_glob \
-        extended_history \
-        hash_all \
-        hist_expand \
-        hist_ignore_dups \
-        hist_ignore_space \
-        hist_no_store \
-        hist_reduce_blanks \
-        inc_append_history \
-        list_ambiguous \
-        list_packed \
-        magic_equal_subst \
-        mark_dirs \
-        multi_os \
-        no_list_beep \
-        notify \
-        numeric_glob_sort \
-        prompt_subst \
-        pushd_minus \
-        pushd_ignore_dups \
-        rmstar_wait \
-        share_history \
+    always_last_prompt \
+    append_history \
+    auto_cd \
+    auto_list \
+    auto_menu \
+    auto_param_keys \
+    auto_param_slash \
+    auto_pushd \
+    complete_in_word \
+    extended_glob \
+    extended_history \
+    hash_all \
+    hist_expand \
+    hist_ignore_dups \
+    hist_ignore_space \
+    hist_no_store \
+    hist_reduce_blanks \
+    inc_append_history \
+    list_ambiguous \
+    list_packed \
+    magic_equal_subst \
+    mark_dirs \
+    multi_os \
+    no_list_beep \
+    notify \
+    numeric_glob_sort \
+    prompt_subst \
+    pushd_minus \
+    pushd_ignore_dups \
+    share_history \
 ;
 
 ### VARIABLES ###
@@ -51,12 +50,22 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*:default' menu select=1
 
 ### KEYBINDS ###
+bindkey -e
 bindkey "^?"    backward-delete-char
-bindkey "^H"    backward-delete-char
+bindkey "^_"    describe-key-briefly
+bindkey "^F"    history-incremental-pattern-search-backward
+bindkey "^H"    backward-kill-word
+bindkey "^K"    kill-region
+bindkey "^P"    push-input
+bindkey "^Y"    yank
+bindkey "^[OA"  history-search-backward
+bindkey "^[OB"  history-search-forward
+bindkey "^[OD"  backward-word
+bindkey "^[OC"  forward-word
 bindkey "^[[3~" delete-char
 bindkey "^[[1~" beginning-of-line
 bindkey "^[[4~" end-of-line
-
+bindkey "^[[[A" where-is
 
 ### ALIASES ###
 alias -g ls='ls -av --color=auto'
