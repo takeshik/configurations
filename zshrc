@@ -20,6 +20,7 @@ setopt \
     inc_append_history \
     list_ambiguous \
     list_packed \
+    long_list_jobs \
     magic_equal_subst \
     mark_dirs \
     multi_os \
@@ -42,18 +43,41 @@ HISTFILE=~/.zsh_history
 HISTSIZE=99999999
 SAVEHIST=99999999
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+REPORTTIME=3
 watch=(all all)
+
+### AUTOLOADS ###
+autoload -U colors; colors
+autoload -U compinit; compinit -u
+autoload    zed
+autoload -U zmv
 
 ### STYLES ###
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*:default' menu select=1
+zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/bin /sbin `echo $PATH | sed -e 's/:/ /g'`
+
+### FUNCTIONS ###
+
+function cd() {
+    builtin cd $@ && ls;
+}
+
+function cdup() {
+    echo
+    cd ..
+    zle reset-prompt
+}
+
+zle -N cdup
 
 ### KEYBINDS ###
 bindkey -e
 bindkey "^?"    backward-delete-char
 bindkey "^_"    describe-key-briefly
 bindkey "^F"    history-incremental-pattern-search-backward
+bindkey "^J"    history-incremental-pattern-search-forward
 bindkey "^H"    backward-kill-word
 bindkey "^K"    kill-region
 bindkey "^P"    push-input
@@ -66,11 +90,12 @@ bindkey "^[[3~" delete-char
 bindkey "^[[1~" beginning-of-line
 bindkey "^[[4~" end-of-line
 bindkey "^[[[A" where-is
+bindkey "^\^"   cdup
 
 ### ALIASES ###
 alias -g ls='ls -av --color=auto'
 alias -g ls!='ls -R'
-alias -g ll='ls -l'
+alias -g ll='ls -l --time-style=long-iso'
 alias -g ll!='ll -R'
 alias -g rm='rm -v'
 alias -g rm!='rm -R'
@@ -93,35 +118,23 @@ alias -g chacl!='chacl -r'
 alias -g getfacl='getfacl --tabular'
 alias -g getfacl!='getfacl -LR'
 alias -g setfacl!='setfacl -LR'
+alias -g du1='du --max-depth=1'
+alias -g psx='ps -AHo pid,user,group,%cpu,%mem,nlwp,vsize,rssize,tname,stat,ni,start_time,cputime,args'
 alias -g pwd='pwd -P'
 alias -g grep='grep -n --color'
 alias -g history='history -Ddi'
-alias -g ps='ps -AHo pid,user,group,%cpu,%mem,nlwp,vsize,rssize,tname,stat,ni,start_time,cputime,args'
 alias -g ja='LANG=ja_JP.UTF8 LC_ALL=ja_JP.UTF-8'
 alias -g en='LANG=en_US.UTF8 LC_ALL=en_US.UTF-8'
 alias -g h='history 0'
 alias -g g='grep'
-alias -g s='dirs'
+alias -g s='dirs -v'
 alias -g l='$PAGER'
 alias -g k='kill'
 alias -g K='kill -KILL'
 alias -g ka='killall'
 alias -g KA='killall -KILL'
 alias -g r='popd'
-alias -g j='jobs'
+alias -g j='jobs -lp'
 alias -g H='head'
 alias -g T='tail'
 alias -g TF='tail -F'
-
-### AUTOLOADS ###
-autoload -U colors; colors
-autoload -U compinit; compinit
-autoload    zed
-autoload -U zmv
-
-### FUNCTIONS ###
-
-function cd() {
-    builtin cd $@ && ls;
-}
-
