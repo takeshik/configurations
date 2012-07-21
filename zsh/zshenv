@@ -27,4 +27,4 @@ export PAGER=`if [ =lv ] > /dev/null 2>&1; then
 else
     echo =less
 fi`
-# vim:set ft=cs fenc=utf-8 ts=4 sw=4 sts=4 et:
+# vim:set ft=sh fenc=utf-8 ts=4 sw=4 sts=4 et:

@@ -147,4 +147,4 @@ alias -s {sln,csproj,vbproj,fsproj}=xbuild
 for f in $HOME/.zsh/*(N); do
     source f
 done
-# vim:set ft=cs fenc=utf-8 ts=4 sw=4 sts=4 et:
+# vim:set ft=sh fenc=utf-8 ts=4 sw=4 sts=4 et:
