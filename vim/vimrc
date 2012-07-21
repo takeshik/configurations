@@ -1,0 +1,19 @@
+scriptencoding utf-8
+colorscheme molokai
+
+set termencoding=utf-8
+set encoding=japan
+set fileencodings=utf-8
+
+set autoindent
+set browsedir=buffer
+set nocompatible
+set expandtab
+set incsearch
+set number
+set showmatch
+set smartcase
+set smartindent
+set smarttab
+set tabstop=4
+set modeline

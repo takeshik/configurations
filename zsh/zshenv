@@ -1,0 +1,30 @@
+# -*- mode: sh; encoding: utf-8; tab-width: 4; indent-tabs-mode: nil; -*-
+typeset -U path
+path=(
+    $HOME/local/sbin(N-/)
+    $HOME/local/bin(N-/)
+    $path
+)
+
+typeset -xT SUDO_PATH sudo_path
+sudo_path=(
+    /usr/local/sbin(N-/)
+    /usr/sbin(N-/)
+    /sbin(N-/)
+    /opt/sbin(N-/)
+)
+
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export EDITOR=`if [ =vim ] > /dev/null 2>&1; then
+    echo =vim
+else
+    echo =vi
+fi`
+
+export PAGER=`if [ =lv ] > /dev/null 2>&1; then
+    echo =lv
+else
+    echo =less
+fi`
+# vim:set ft=cs fenc=utf-8 ts=4 sw=4 sts=4 et:
