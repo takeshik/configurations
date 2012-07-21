@@ -57,7 +57,7 @@ autoload -U zmv
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*:default' menu select=1
-zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/bin /sbin `echo $PATH | sed -e 's/:/ /g'`
+zstyle ':completion:*:sudo:*' command-path $sudo_path $path
 
 function cd() {
     builtin cd $@ && ls;
@@ -119,6 +119,7 @@ alias psx='ps -AHo pid,user,group,%cpu,%mem,nlwp,vsize,rssize,tname,stat,ni,star
 alias pwd='pwd -P'
 alias grep='grep -n --color'
 alias history='history -Ddi'
+alias watch='watch -c -d -t -n 1'
 alias c='LANG=C LC_ALL=C'
 alias ja='LANG=ja_JP.UTF-8 LC_ALL=ja_JP.UTF-8'
 alias en='LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8'
@@ -129,7 +130,7 @@ alias l='$PAGER'
 alias k='kill'
 alias K='kill -KILL'
 alias ka='killall'
-alias KA='killall -KILL'
+alias KA='killall -KILL'x
 alias ssu='sudo su -'
 alias r='popd'
 alias j='jobs -lp'
@@ -143,6 +144,12 @@ alias -s html=w3m
 alias -s exe=mono
 alias -s jar='java -jar'
 alias -s {sln,csproj,vbproj,fsproj}=xbuild
+
+eval `dircolors \`if [ -f $HOME/.DIR_COLORS ]; then
+    echo $HOME/.dir_colors
+elif [ -f /etc/DIR_COLORS ]; then
+    echo /etc/DIR_COLORS
+fi\``
 
 for f in $HOME/.zsh/*(N); do
     source f
