@@ -1,4 +1,5 @@
 # -*- mode: sh; encoding: utf-8; tab-width: 4; indent-tabs-mode: nil; -*-
+
 setopt \
     always_last_prompt \
     append_history \
@@ -33,6 +34,13 @@ setopt \
     share_history \
 ;
 
+autoload -U colors; colors
+autoload -U compinit; compinit -u
+autoload -U zcalc
+autoload -U zed
+autoload -U ztodo
+autoload -U zmv
+
 export PROMPT='[%B%{%(?.${fg[yellow]}.${fg[magenta]})%}%h%b%{${reset_color}%}|%B%U%{${fg[red]}%}%n@%M%u%b%{${reset_color}%}:%B%{${fg[blue]}%}%~%b%{${reset_color}%}]%(1j.%B%{${fg[green]}%}%#%b%{${reset_color}%}.%# '
 export RPROMPT='(r:%? s:`echo $(( \`dirs -p | wc -l\` - 1))` j:%j%)'
 export PROMPT2='%B%{${fg[black]}%}--->%b%{${reset_color}%} '
@@ -46,49 +54,6 @@ REPORTTIME=1
 TIMEFMT='%J (real: %*E user: %*U sys: %*S cpu: %P pf: %F)'
 watch=(all all)
 WATCHFMT='%n has %a %l from %m at %D %T'
-
-autoload -U colors; colors
-autoload -U compinit; compinit -u
-autoload -U zcalc
-autoload -U zed
-autoload -U ztodo
-autoload -U zmv
-
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-zstyle ':completion:*:default' menu select=1
-zstyle ':completion:*:sudo:*' command-path $sudo_path $path
-
-function cd() {
-    builtin cd $@ && ls;
-}
-
-function cdup() {
-    echo
-    cd ..
-    zle reset-prompt
-}
-
-zle -N cdup
-
-bindkey -e
-bindkey "^?"    backward-delete-char
-bindkey "^_"    describe-key-briefly
-bindkey "^F"    history-incremental-pattern-search-backward
-bindkey "^J"    history-incremental-pattern-search-forward
-bindkey "^H"    backward-kill-word
-bindkey "^K"    kill-region
-bindkey "^P"    push-input
-bindkey "^Y"    yank
-bindkey "^[OA"  history-search-backward
-bindkey "^[OB"  history-search-forward
-bindkey "^[OD"  backward-word
-bindkey "^[OC"  forward-word
-bindkey "^[[3~" delete-char
-bindkey "^[[1~" beginning-of-line
-bindkey "^[[4~" end-of-line
-bindkey "^[[[A" where-is
-bindkey "^\^"   cdup
 
 alias ls='ls -av --color=auto'
 alias ls!='ls -R'
@@ -151,7 +116,44 @@ elif [ -f /etc/DIR_COLORS ]; then
     echo /etc/DIR_COLORS
 fi\``
 
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*:default' menu select=1
+zstyle ':completion:*:sudo:*' command-path $sudo_path $path
+
+function cd() {
+    builtin cd $@ && ls;
+}
+
+function cdup() {
+    echo
+    cd ..
+    zle reset-prompt
+}
+
+zle -N cdup
+
+bindkey -e
+bindkey "^?"    backward-delete-char
+bindkey "^_"    describe-key-briefly
+bindkey "^F"    history-incremental-pattern-search-backward
+bindkey "^J"    history-incremental-pattern-search-forward
+bindkey "^H"    backward-kill-word
+bindkey "^K"    kill-region
+bindkey "^P"    push-input
+bindkey "^Y"    yank
+bindkey "^[OA"  history-search-backward
+bindkey "^[OB"  history-search-forward
+bindkey "^[OD"  backward-word
+bindkey "^[OC"  forward-word
+bindkey "^[[3~" delete-char
+bindkey "^[[1~" beginning-of-line
+bindkey "^[[4~" end-of-line
+bindkey "^[[[A" where-is
+bindkey "^\^"   cdup
+
 for f in $HOME/.zsh/*(N); do
     source f
 done
+
 # vim:set ft=sh fenc=utf-8 ts=4 sw=4 sts=4 et:
