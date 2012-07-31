@@ -1,4 +1,5 @@
 # -*- mode: sh; encoding: utf-8; tab-width: 4; indent-tabs-mode: nil; -*-
+
 typeset -U path
 path=(
     $HOME/local/sbin(N-/)
@@ -14,17 +15,16 @@ sudo_path=(
     /opt/sbin(N-/)
 )
 
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-export EDITOR=`if [ =vim ] > /dev/null 2>&1; then
+export EDITOR=`if where vim > /dev/null; then
     echo =vim
 else
     echo =vi
 fi`
 
-export PAGER=`if [ =lv ] > /dev/null 2>&1; then
+export PAGER=`if where lv > /dev/null; then
     echo =lv
 else
     echo =less
 fi`
+
 # vim:set ft=sh fenc=utf-8 ts=4 sw=4 sts=4 et:
