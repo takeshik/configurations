@@ -11,15 +11,17 @@
 # See the manpage fstab(5) for more information.
 #
 
-# <FILESYSTEM> <MOUNTPOINT>             <TYPE>      <OPTIONS>                               <DUMP/PASS>
-/dev/sda2      /                        xfs         noatime,nodev                           0     0
-/dev/vg0/home  /home                    xfs         noatime,nodev,nosuid                    0     0
-/dev/vg0/usr   /usr                     xfs         noatime,nodev                           0     0
-/dev/vg0/var   /var                     xfs         noatime,nodev,nosuid                    0     0
-sysfs          /sys                     sysfs       noatime,nodev,noexec,nosuid             0     0
-fusectl        /sys/fs/fuse/connections fusectl     noatime,nodev,noexec,nosuid             0     0
-proc           /proc                    proc        noatime,nodev,noexec,nosuid             0     0
-#binfmt_misc   /proc/sys/fs/binfmt_misc binfmt_misc noatime,nodev,noexec,nosuid             0     0
-udev           /dev                     tmpfs       noatime,noexec,nosuid                   0     0
-devpts         /dev/pts                 devpts      noatime,noexec,nosuid                   0     0
-shm            /dev/shm                 tmpfs       noatime,nodev,noexec,nosuid             0     0
+# <FILESYSTEM>          <MOUNTPOINT>             <TYPE>      <OPTIONS>                                  <DUMP/PASS>
+/dev/sda1               /                        xfs         relatime,nodev                             0     0
+/dev/vg-ssd0/usr        /usr                     xfs         relatime,nodev                             0     0
+/dev/vg-hd0/usr-portage /usr/portage             xfs         noatime,nodev                              0     0
+/dev/vg-hd0/home        /home                    xfs         relatime,nodev,nosuid                      0     0
+/dev/vg-hd0/var         /var                     xfs         relatime,nodev,nosuid                      0     0
+tmp                     /tmp                     tmpfs       relatime,nodev,nosuid,size=4096m,mode=1777 0     0
+sysfs                   /sys                     sysfs       noatime,nodev,noexec,nosuid                0     0
+fusectl                 /sys/fs/fuse/connections fusectl     noatime,nodev,noexec,nosuid                0     0
+proc                    /proc                    proc        noatime,nodev,noexec,nosuid                0     0
+#binfmt_misc            /proc/sys/fs/binfmt_misc binfmt_misc noatime,nodev,noexec,nosuid                0     0
+udev                    /dev                     tmpfs       noatime,noexec,nosuid                      0     0
+devpts                  /dev/pts                 devpts      noatime,noexec,nosuid                      0     0
+shm                     /dev/shm                 tmpfs       relatime,nodev,noexec,nosuid,size=2048m    0     0
