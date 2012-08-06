@@ -42,15 +42,21 @@ setopt \
 
 autoload -Uz colors; colors
 autoload -Uz compinit; compinit -u
+autoload -Uz url-quote-magic; zle -N self-insert url-quote-magic
+autoload -Uz vcs_info
 autoload -Uz zcalc
 autoload -Uz zed
 autoload -Uz ztodo
 autoload -Uz zmv
-autoload -Uz url-quote-magic; zle -N self-insert url-quote-magic
 
-export PROMPT='[%B%{%(?.${fg[yellow]}.${fg[magenta]})%}%h%b%{${reset_color}%}|%B%U%{${fg[red]}%}%n@%M%u%b%{${reset_color}%}:%B%{${fg[blue]}%}%d%b%{${reset_color}%}]%(1j.%B%{${fg[green]}%}%#%b%{${reset_color}%}.%#) '
-export RPROMPT='(r:%? s:`echo $(( \`dirs -p | wc -l\` - 1))` j:%j%)'
-export PROMPT2='%B%{${fg[black]}%}--->%b%{${reset_color}%} '
+local p_user="%B%U%{%(!.$fg[red].$fg[green])%}%n@%M%u%b%{$reset_color%}"
+local p_pwd="%B%{$fg[blue]%}%~%b%{$reset_color%}"
+local p_suffix="%(1j.%B%{$fg[yellow]%}%(!.#.$)%b%{$reset_color%}.%(!.#.$))"
+export PROMPT="[$p_user:$p_pwd]$p_suffix "
+
+export RPROMPT='(%1(v|%1v%f |)r:%(?.0.%B%{$fg[magenta]%}%?%b%{$reset_color%}) s:$(( `dirs -p | wc -l` - 1)) j:%j)'
+
+export PROMPT2='%B%{$fg[black]%}--->%b%{$reset_color%} '
 export RPROMPT2='%_'
 
 HISTFILE=~/.zsh_history
@@ -114,7 +120,6 @@ else
     alias chmod!='chmod -R'
     alias grep='grep -n'
     alias du1='du -d 1'
-    alias psx='ps -AHo pid,user,group,%cpu,%mem,nlwp,vsize,rssize,tname,stat,ni,start_time,cputime,args'
 fi
 
 # Common commands
@@ -161,6 +166,18 @@ zstyle ':completion:*' use-cache true
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*:sudo:*' command-path $sudo_path $path
 zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
+zstyle ':vcs_info:*' enable git hg svn
+zstyle ':vcs_info:*' use-simple true
+zstyle ':vcs_info:*' stagedstr "+"
+zstyle ':vcs_info:*' unstagedstr "?"
+zstyle ':vcs_info:*' formats '%s:%b%c%u'
+zstyle ':vcs_info:*' actionformats '%s:%b%c%u:%a'
+
+function precmd() {
+    psvar=()
+    LANG=en_US.UTF-8 vcs_info
+    [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
+}
 
 function cd() {
     builtin cd $@ && ls;
