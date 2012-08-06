@@ -40,12 +40,12 @@ setopt \
     share_history \
 ;
 
-autoload -U colors; colors
-autoload -U compinit; compinit -u
-autoload -U zcalc
-autoload -U zed
-autoload -U ztodo
-autoload -U zmv
+autoload -Uz colors; colors
+autoload -Uz compinit; compinit -u
+autoload -Uz zcalc
+autoload -Uz zed
+autoload -Uz ztodo
+autoload -Uz zmv
 autoload -Uz url-quote-magic; zle -N self-insert url-quote-magic
 
 export PROMPT='[%B%{%(?.${fg[yellow]}.${fg[magenta]})%}%h%b%{${reset_color}%}|%B%U%{${fg[red]}%}%n@%M%u%b%{${reset_color}%}:%B%{${fg[blue]}%}%d%b%{${reset_color}%}]%(1j.%B%{${fg[green]}%}%#%b%{${reset_color}%}.%#) '
@@ -146,13 +146,15 @@ alias -s exe=mono
 alias -s jar='java -jar'
 alias -s {sln,csproj,vbproj,fsproj}=xbuild
 
-eval `dircolors \`if [ -f $HOME/.DIR_COLORS ]; then
-    echo $HOME/.dir_colors
-elif [ -f /etc/DIR_COLORS ]; then
-    echo /etc/DIR_COLORS
-fi\``
+if where dircolors > /dev/null; then
+    eval `dircolors \`if [ -f $HOME/.DIR_COLORS ]; then
+        echo $HOME/.dir_colors
+    elif [ -f /etc/DIR_COLORS ]; then
+        echo /etc/DIR_COLORS
+    fi\``
+fi
 
-zstyle ':completion:*' completer _complete _expand _history _list _match _prefix
+zstyle ':completion:*' completer _complete _expand _list _match _prefix
 zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-z}={A-Z} r:|[-_.]=**'
 zstyle ':completion:*' menu select=2
 zstyle ':completion:*' use-cache true
@@ -181,6 +183,7 @@ bindkey "^H"    backward-kill-word
 bindkey "^K"    kill-region
 bindkey "^P"    push-input
 bindkey "^Y"    yank
+bindkey "^[[Z"  reverse-menu-complete
 bindkey "^[OA"  history-search-backward
 bindkey "^[OB"  history-search-forward
 bindkey "^[OD"  backward-word
