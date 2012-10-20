@@ -153,6 +153,10 @@ alias -g _N_='> /dev/null 2>&1'
 alias -s txt=$PAGER
 alias -s htm=w3m
 alias -s html=w3m
+alias -s php=php
+alias -s pl=perl
+alias -s py=python
+alias -s rb=ruby
 alias -s exe=mono
 alias -s jar='java -jar'
 alias -s {sln,csproj,vbproj,fsproj}=xbuild
@@ -183,7 +187,7 @@ function precmd() {
     psvar=()
     LANG=en_US.UTF-8 vcs_info
     [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
-    dirn=$((`dirs -p | wc -l` - 1))
+    local dirn=$((`dirs -p | wc -l` - 1))
     [ $dirn -gt 0 ] && psvar[2]=$dirn
 }
 
