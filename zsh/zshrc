@@ -42,6 +42,7 @@ setopt \
 
 autoload -Uz colors; colors
 autoload -Uz compinit; compinit -u
+autoload -Uz predict-on
 autoload -Uz url-quote-magic; zle -N self-insert url-quote-magic
 autoload -Uz vcs_info
 autoload -Uz zcalc
@@ -52,11 +53,15 @@ autoload -Uz zmv
 local p_user="%B%U%{%(!.$fg[red].$fg[green])%}%n@%M%u%b%{$reset_color%}"
 local p_pwd="%B%{$fg[blue]%}%~%b%{$reset_color%}"
 local p_suffix="%(1j.%B%{$fg[yellow]%}%(!.#.$)%b%{$reset_color%}.%(!.#.$))"
-export PROMPT="[$p_user:$p_pwd]$p_suffix "
+export PROMPT="[${p_user}:${p_pwd}]${p_suffix} "
 
-export RPROMPT='(%1(v|%1v%f |)r:%(?.0.%B%{$fg[magenta]%}%?%b%{$reset_color%}) s:$(( `dirs -p | wc -l` - 1)) j:%j)'
+local rp_vcs="(%1(V|%1v%f |)"
+local rp_ret="%(?.0.%B%{$fg[magenta]%}%?%b%{$reset_color%})"
+local rp_dirs="%2(V.%{$fg[cyan]%}%2v%{$reset_color%}.0)"
+local rp_jobs="%1(j.%{$fg[yellow]%}%j%{$reset_color%}.0)"
+export RPROMPT="${rp_vcs}r:${rp_ret} s:${rp_dirs} j:${rp_jobs})"
 
-export PROMPT2='%B%{$fg[black]%}--->%b%{$reset_color%} '
+export PROMPT2='%B%{$fg[black]%}-->%b%{$reset_color%} '
 export RPROMPT2='%_'
 
 HISTFILE=~/.zsh_history
@@ -133,6 +138,7 @@ alias h='history 0'
 alias g='grep'
 alias s='dirs -v'
 alias l='$PAGER'
+alias v='view -'
 alias k='kill'
 alias K='kill -KILL'
 alias ka='killall'
@@ -177,6 +183,8 @@ function precmd() {
     psvar=()
     LANG=en_US.UTF-8 vcs_info
     [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
+    dirn=$((`dirs -p | wc -l` - 1))
+    [ $dirn -gt 0 ] && psvar[2]=$dirn
 }
 
 function cd() {
@@ -189,14 +197,25 @@ function cdup() {
     zle reset-prompt
 }
 
+function predict-toggle() {
+    if [ ! $ZSH_PREDICT ]; then
+        predict-on
+        ZSH_PREDICT=1
+    else
+        predict-off
+        unset ZSH_PREDICT
+    fi
+}
+
 zle -N cdup
+zle -N predict-toggle
 
 bindkey -e
 bindkey "^?"    backward-delete-char
 bindkey "^_"    describe-key-briefly
 bindkey "^F"    history-incremental-pattern-search-backward
 bindkey "^J"    history-incremental-pattern-search-forward
-bindkey "^H"    backward-kill-word
+bindkey "^H"    backward-delete-char
 bindkey "^K"    kill-region
 bindkey "^P"    push-input
 bindkey "^Y"    yank
@@ -205,6 +224,7 @@ bindkey "^[OA"  history-search-backward
 bindkey "^[OB"  history-search-forward
 bindkey "^[OD"  backward-word
 bindkey "^[OC"  forward-word
+bindkey "^[^P"  predict-toggle
 bindkey "^[[3~" delete-char
 bindkey "^[[1~" beginning-of-line
 bindkey "^[[4~" end-of-line

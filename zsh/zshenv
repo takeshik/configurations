@@ -21,10 +21,7 @@ else
     echo =vi
 fi`
 
-export PAGER=`if where lv > /dev/null; then
-    echo =lv
-else
-    echo =less
-fi`
+export PAGER==less
+export LESS='-MRx4#4'
 
 # vim:set ft=sh fenc=utf-8 ts=4 sw=4 sts=4 et:
