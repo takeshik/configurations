@@ -40,10 +40,13 @@ setopt \
     share_history \
 ;
 
+[ -n "`alias run-help`" ] && unalias run-help
+
 autoload -Uz colors; colors
 autoload -Uz compinit; compinit -u
 autoload -Uz predict-on
-autoload -Uz url-quote-magic; zle -N self-insert url-quote-magic
+autoload -Uz run-help
+autoload -Uz url-quote-magic
 autoload -Uz vcs_info
 autoload -Uz zcalc
 autoload -Uz zed
@@ -131,6 +134,7 @@ fi
 alias md='mkdir'
 alias history='history -Ddi'
 alias pwd='pwd -P'
+alias cc='copyclip'
 alias c='LANG=C LC_ALL=C'
 alias ja='LANG=ja_JP.UTF-8 LC_ALL=ja_JP.UTF-8'
 alias en='LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8'
@@ -171,13 +175,14 @@ fi
 
 zstyle ':completion:*' completer _complete _expand _list _match _prefix
 zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-z}={A-Z} r:|[-_.]=**'
-zstyle ':completion:*' menu select=2
+zstyle ':completion:*' menu select
 zstyle ':completion:*' use-cache true
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*:sudo:*' command-path $sudo_path $path
 zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
 zstyle ':vcs_info:*' enable git hg svn
-zstyle ':vcs_info:*' use-simple true
+zstyle ':vcs_info:*' use-simple false
+zstyle ":vcs_info:*" check-for-changes true
 zstyle ':vcs_info:*' stagedstr "+"
 zstyle ':vcs_info:*' unstagedstr "?"
 zstyle ':vcs_info:*' formats '%s:%b%c%u'
@@ -201,6 +206,20 @@ function cdup() {
     zle reset-prompt
 }
 
+function copyclip() {
+    if which xsel >/dev/null 2>&1 ; then
+        xsel --input --clipboard # X11
+    elif which pbcopy >/dev/null 2>&1 ; then
+        pbcopy # Mac OS X
+    elif which putclip >/dev/null 2>&1 ; then
+        putclip # Cygwin
+    elif which clip >/dev/null 2>&1 ; then
+        putclip # Windows
+    else
+        $PAGER
+    fi
+}
+
 function predict-toggle() {
     if [ ! $ZSH_PREDICT ]; then
         predict-on
@@ -212,6 +231,7 @@ function predict-toggle() {
 }
 
 zle -N cdup
+zle -N self-insert url-quote-magic
 zle -N predict-toggle
 
 bindkey -e
@@ -223,17 +243,20 @@ bindkey "^H"    backward-delete-char
 bindkey "^K"    kill-region
 bindkey "^P"    push-input
 bindkey "^Y"    yank
+bindkey "^\^"   cdup
+bindkey "^[j"   cdup
 bindkey "^[[Z"  reverse-menu-complete
 bindkey "^[OA"  history-search-backward
 bindkey "^[OB"  history-search-forward
 bindkey "^[OD"  backward-word
 bindkey "^[OC"  forward-word
 bindkey "^[^P"  predict-toggle
+bindkey "^[[11" run-help
+bindkey "^[[2"  overwrite-mode
 bindkey "^[[3~" delete-char
 bindkey "^[[1~" beginning-of-line
 bindkey "^[[4~" end-of-line
 bindkey "^[[[A" where-is
-bindkey "^\^"   cdup
 
 for f in $HOME/.zsh/*(N); do
     source f
