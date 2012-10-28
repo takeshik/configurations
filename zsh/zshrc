@@ -165,7 +165,7 @@ alias -s exe=mono
 alias -s jar='java -jar'
 alias -s {sln,csproj,vbproj,fsproj}=xbuild
 
-if where dircolors > /dev/null; then
+if where dircolors > /dev/null 2>&1; then
     eval `dircolors \`if [ -f $HOME/.DIR_COLORS ]; then
         echo $HOME/.dir_colors
     elif [ -f /etc/DIR_COLORS ]; then
@@ -187,6 +187,7 @@ zstyle ':vcs_info:*' stagedstr "+"
 zstyle ':vcs_info:*' unstagedstr "?"
 zstyle ':vcs_info:*' formats '%s:%b%c%u'
 zstyle ':vcs_info:*' actionformats '%s:%b%c%u:%a'
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([%0-9]#)*=0=01;31'
 
 function precmd() {
     psvar=()
@@ -200,20 +201,32 @@ function cd() {
     builtin cd $@ && ls;
 }
 
+function cdpop() {
+    if popd > /dev/null 2>&1; then
+        echo
+        ls
+        # HACK: to update $RPROMPT
+        precmd
+        zle reset-prompt
+    fi
+}
+
 function cdup() {
     echo
     cd ..
+    # HACK: to update $RPROMPT
+    precmd
     zle reset-prompt
 }
 
 function copyclip() {
-    if which xsel >/dev/null 2>&1 ; then
+    if which xsel > /dev/null 2>&1 ; then
         xsel --input --clipboard # X11
-    elif which pbcopy >/dev/null 2>&1 ; then
+    elif which pbcopy > /dev/null 2>&1 ; then
         pbcopy # Mac OS X
-    elif which putclip >/dev/null 2>&1 ; then
+    elif which putclip > /dev/null 2>&1 ; then
         putclip # Cygwin
-    elif which clip >/dev/null 2>&1 ; then
+    elif which clip > /dev/null 2>&1 ; then
         putclip # Windows
     else
         $PAGER
@@ -230,33 +243,54 @@ function predict-toggle() {
     fi
 }
 
+function history-hybrid-search-backward() {
+    if [ -z $BUFFER ]; then
+        zle history-incremental-pattern-search-backward
+    else
+        zle history-search-backward
+    fi
+}
+
+function history-hybrid-search-forward() {
+    if [ -z $BUFFER ]; then
+        zle history-incremental-pattern-search-forward
+    else
+        zle history-search-forward
+    fi
+}
+
+zle -N cdpop
 zle -N cdup
 zle -N self-insert url-quote-magic
 zle -N predict-toggle
+zle -N history-hybrid-search-backward
+zle -N history-hybrid-search-forward
 
 bindkey -e
-bindkey "^?"    backward-delete-char
-bindkey "^_"    describe-key-briefly
-bindkey "^F"    history-incremental-pattern-search-backward
-bindkey "^J"    history-incremental-pattern-search-forward
-bindkey "^H"    backward-delete-char
-bindkey "^K"    kill-region
-bindkey "^P"    push-input
-bindkey "^Y"    yank
-bindkey "^\^"   cdup
-bindkey "^[j"   cdup
-bindkey "^[[Z"  reverse-menu-complete
-bindkey "^[OA"  history-search-backward
-bindkey "^[OB"  history-search-forward
-bindkey "^[OD"  backward-word
-bindkey "^[OC"  forward-word
-bindkey "^[^P"  predict-toggle
-bindkey "^[[11" run-help
-bindkey "^[[2"  overwrite-mode
-bindkey "^[[3~" delete-char
-bindkey "^[[1~" beginning-of-line
-bindkey "^[[4~" end-of-line
-bindkey "^[[[A" where-is
+bindkey "^?"     backward-delete-char
+bindkey "^_"     describe-key-briefly
+bindkey "^F"     history-hybrid-search-backward
+bindkey "^J"     history-hybrid-search-forward
+bindkey "^H"     backward-delete-char
+bindkey "^K"     kill-region
+bindkey "^P"     push-input
+bindkey "^Y"     yank
+bindkey "^Z"     undo
+bindkey "^[z"    redo
+bindkey "^[[Z"   reverse-menu-complete
+bindkey "^[OA"   expand-word
+bindkey "^[OB"   list-expand
+bindkey "^[OD"   backward-word
+bindkey "^[OC"   forward-word
+bindkey "^[^P"   predict-toggle
+bindkey "^[[11"  run-help
+bindkey "^[[2"   overwrite-mode
+bindkey "^[[3~"  delete-char
+bindkey "^[[1~"  beginning-of-line
+bindkey "^[[4~"  end-of-line
+bindkey "^[[[A"  where-is
+bindkey "^[^[[A" cdup
+bindkey "^[^[[B" cdpop
 
 for f in $HOME/.zsh/*(N); do
     source f
