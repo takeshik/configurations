@@ -292,6 +292,9 @@ bindkey "^[[[A"  where-is
 bindkey "^[^[[A" cdup
 bindkey "^[^[[B" cdpop
 
+bindkey -M isearch "^F" history-incremental-pattern-search-backward
+bindkey -M isearch "^J" history-incremental-pattern-search-forward
+
 for f in $HOME/.zsh/*(N); do
     source f
 done
