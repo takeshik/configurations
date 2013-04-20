@@ -296,7 +296,7 @@ bindkey -M isearch "^F" history-incremental-pattern-search-backward
 bindkey -M isearch "^J" history-incremental-pattern-search-forward
 
 for f in $HOME/.zsh/*(N); do
-    source f
+    source $f
 done
 
 # vim:set ft=sh fenc=utf-8 ts=4 sw=4 sts=4 et:
