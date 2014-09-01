@@ -285,7 +285,7 @@ bindkey "^[^[[B" cdpop
 bindkey -M isearch "^F" history-incremental-pattern-search-backward
 bindkey -M isearch "^J" history-incremental-pattern-search-forward
 
-for f in $HOME/.zsh/*(N); do
+for f in $ZDOTDIR/rc.d/*(N); do
     source $f
 done
 

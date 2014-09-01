@@ -2,7 +2,7 @@ scriptencoding utf-8
 colorscheme molokai
 
 set termencoding=utf-8
-set encoding=japan
+set encoding=utf-8
 set fileencodings=utf-8
 
 set autoindent
@@ -18,3 +18,5 @@ set smarttab
 set tabstop=4
 set shiftwidth=4
 set modeline
+set shortmess+=I
+

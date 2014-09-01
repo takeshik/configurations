@@ -31,4 +31,8 @@ fi`
 
 export LESS='-MRx4#4'
 
+for f in $ZDOTDIR/env.d/*(N); do
+    source $f
+done
+
 # vim:set ft=sh fenc=utf-8 ts=4 sw=4 sts=4 et:
