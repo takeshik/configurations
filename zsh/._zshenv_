@@ -1,5 +1,7 @@
 # -*- mode: sh; encoding: utf-8; tab-width: 4; indent-tabs-mode: nil; -*-
 
+# Usage: ln -s ~/.zsh/._zshenv_ ~/.zshenv
+
 export ZDOTDIR=$HOME/.zsh
 source $ZDOTDIR/.zshenv
 
