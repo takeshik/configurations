@@ -53,7 +53,7 @@ autoload -Uz zed
 autoload -Uz ztodo
 autoload -Uz zmv
 
-local p_user="%B%U%{%(!.$fg[red].$fg[green])%}%n@%M%u%b%{$reset_color%}"
+local p_user="%B%U%{%(!.$fg[red].$fg[green])%}%n@%m%u%b%{$reset_color%}"
 local p_pwd="%B%{$fg[blue]%}%~%b%{$reset_color%}"
 local p_suffix="%(1j.%B%{$fg[yellow]%}%(!.#.$)%b%{$reset_color%}.%(!.#.$))"
 export PROMPT="[${p_user}:${p_pwd}]${p_suffix} "
@@ -67,7 +67,7 @@ export RPROMPT="${rp_vcs}r:${rp_ret} s:${rp_dirs} j:${rp_jobs})"
 export PROMPT2='%B%{$fg[black]%}-->%b%{$reset_color%} '
 export RPROMPT2='%_'
 
-HISTFILE=~/.zsh_history
+HISTFILE=$ZDOTDIR/.zsh_history
 HISTSIZE=99999999
 SAVEHIST=99999999
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
@@ -79,58 +79,40 @@ WATCHFMT='%n has %a %l from %m at %D %T'
 if =ls --version 2>&1 | grep -q GNU; then
     # GNU userland
     alias ls='ls -av --color=auto'
-    alias ls!='ls -R'
     alias ll='ls -l --time-style=long-iso'
-    alias ll!='ll -R'
     alias rm='rm -vr'
-    alias rm!='rm -f'
     alias cp='cp -av'
-    alias cp!='cp -f'
     alias ln='ln -v'
-    alias ln!='ln -f'
     alias mv='mv -v'
-    alias mv!='mv -f'
     alias mkdir='mkdir -pv'
     alias chown='chown -cv'
-    alias chown!='chown -R'
     alias chgrp='chgrp -cv'
-    alias chgrp!='chgrp -R'
     alias chmod='chmod -cv'
-    alias chmod!='chmod -R'
-    alias chacl!='chacl -r'
     alias grep='grep -n --color'
     alias getfacl='getfacl --tabular'
-    alias getfacl!='getfacl -LR'
-    alias setfacl!='setfacl -LR'
     alias du1='du --max-depth=1'
     alias psx='ps -AHo pid,user,group,%cpu,%mem,nlwp,vsize,rssize,tname,stat,ni,start_time,cputime,args'
     alias watch='watch -c -d -t -n 1'
 else
     # (should be) BSD userland
     alias ls='ls -aFG'
-    alias ls!='ls -R'
     alias ll='ls -l'
-    alias ll!='ll -R'
     alias rm='rm -vr'
-    alias rm!='rm -f'
     alias cp='cp -av'
-    alias cp!='cp -f'
     alias ln='ln -v'
-    alias ln!='ln -f'
     alias mv='mv -v'
-    alias mv!='mv -f'
     alias mkdir='mkdir -pv'
     alias chown='chown -v'
-    alias chown!='chown -R'
     alias chgrp='chgrp -v'
-    alias chgrp!='chgrp -R'
     alias chmod='chmod -v'
-    alias chmod!='chmod -R'
     alias grep='grep -n'
     alias du1='du -d 1'
 fi
 
 # Common commands
+alias ...='../..'
+alias ....='../../..'
+alias .....='../../../..'
 alias md='mkdir'
 alias history='history -Ddi'
 alias pwd='pwd -P'
@@ -259,12 +241,19 @@ function history-hybrid-search-forward() {
     fi
 }
 
+function clear-screen-rehash() {
+    zle clear-screen
+    rehash
+    zle reset-prompt
+}
+
 zle -N cdpop
 zle -N cdup
 zle -N self-insert url-quote-magic
 zle -N predict-toggle
 zle -N history-hybrid-search-backward
 zle -N history-hybrid-search-forward
+zle -N clear-screen-rehash
 
 bindkey -e
 bindkey "^?"     backward-delete-char
@@ -273,6 +262,7 @@ bindkey "^F"     history-hybrid-search-backward
 bindkey "^J"     history-hybrid-search-forward
 bindkey "^H"     backward-delete-char
 bindkey "^K"     kill-region
+bindkey "^L"     clear-screen-rehash
 bindkey "^P"     push-input
 bindkey "^Y"     yank
 bindkey "^Z"     undo

@@ -1,5 +1,7 @@
 # -*- mode: sh; encoding: utf-8; tab-width: 4; indent-tabs-mode: nil; -*-
 
+export ZDOTDIR=$HOME/.zsh
+
 typeset -U path
 path=(
     $HOME/local/sbin(N-/)
@@ -21,7 +23,12 @@ else
     echo =vi
 fi`
 
-export PAGER==less
+export PAGER=`if where vimpager > /dev/null; then
+    echo =vimpager
+else
+    echo =less
+fi`
+
 export LESS='-MRx4#4'
 
 # vim:set ft=sh fenc=utf-8 ts=4 sw=4 sts=4 et:
