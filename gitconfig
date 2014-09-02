@@ -1,0 +1,61 @@
+[user]
+    name = Takeshi KIRIYA
+    email = takeshik@xspect.org
+    signingkey = CFA8894B
+
+[core]
+    autocrlf = input
+    excludesfile = ~/.gitignore
+
+[pull]
+    rebase = true
+
+[push]
+    default = simple
+
+[rebase]
+    autosquash = true
+    autostash = true
+
+[diff]
+    algorithm = histogram
+    mnemonicprefix = true
+
+[alias]
+    st = status -bs
+    br = branch -av --list
+    rem = remote show origin
+    aa = add -Av
+    ci = commit
+    ca = commit -a
+    cam = commit --amend
+    co = checkout
+    fe = fetch --recurse-submodules=on-demand
+    up = pull --rebase --recurse-submodules=on-demand
+    pu = push --tags --recurse-submodules=check
+    di = diff
+    ds = diff --staged
+    l = log --date=short --format=format:'%C(yellow)%h %Cgreen%ad %Cblue%an%C(red bold)%d %C(white)%s'
+    lw = log --date=iso --format=format:'%C(yellow)%H %Cgreen%ad %Cblue%an%C(red bold)%d %C(white)%s'
+    lt = log --date=short --format=format:'%C(yellow)%h %Cgreen%ad %Cblue%an%C(red bold)%d %C(white)%s'
+    ll = log --date=iso --format=format:'%C(yellow)%H %Cgreen%ad %Cblue%an%C(red bold)%d%n%C(white bold)%s%n%Creset%w(0,4,4)%b'
+    wc = whatchanged --date=iso --format=format:'%C(yellow)%H %Cgreen%ad %Cblue%an%C(red bold)%d%n%C(white bold)%s%n%Creset%w(0,4,4)%b'
+    rl = reflog --date=iso --format=format:'%C(yellow)%H %C(green)%gd %Cblue%gn%Cred%d %C(white)%gs'
+    d = diff
+    dm = diff master
+    dw = diff --color-words
+    ds = diff --staged
+    d1 = diff HEAD~
+    d2 = diff HEAD~~
+    d3 = diff HEAD~~~
+    d4 = diff HEAD~~~~
+    d5 = diff HEAD~~~~~
+    d6 = diff HEAD~~~~~~
+    d7 = diff HEAD~~~~~~~
+    d8 = diff HEAD~~~~~~~~
+    g = grep -n
+    gi = grep -n --ignore-case
+
+[url "git@github.com:"]
+    pushinsteadof = "git://github.com/"
+    pushinsteadof = "https://github.com/"
