@@ -37,7 +37,7 @@
     ds = diff --staged
     l = log --date=short --format=format:'%C(yellow)%h %Cgreen%ad %Cblue%an%C(red bold)%d %C(white)%s'
     lw = log --date=iso --format=format:'%C(yellow)%H %Cgreen%ad %Cblue%an%C(red bold)%d %C(white)%s'
-    lt = log --date=short --format=format:'%C(yellow)%h %Cgreen%ad %Cblue%an%C(red bold)%d %C(white)%s'
+    lt = log --graph --date=short --format=format:'%C(yellow)%h %Cgreen%ad %Cblue%an%C(red bold)%d %C(white)%s'
     ll = log --date=iso --format=format:'%C(yellow)%H %Cgreen%ad %Cblue%an%C(red bold)%d%n%C(white bold)%s%n%Creset%w(0,4,4)%b'
     wc = whatchanged --date=iso --format=format:'%C(yellow)%H %Cgreen%ad %Cblue%an%C(red bold)%d%n%C(white bold)%s%n%Creset%w(0,4,4)%b'
     rl = reflog --date=iso --format=format:'%C(yellow)%H %C(green)%gd %Cblue%gn%Cred%d %C(white)%gs'
@@ -55,7 +55,15 @@
     d8 = diff HEAD~~~~~~~~
     g = grep -n
     gi = grep -n --ignore-case
+    desc = describe --always --dirty
 
 [url "git@github.com:"]
     pushinsteadof = "git://github.com/"
     pushinsteadof = "https://github.com/"
+
+[tar "tar.xz"]
+	command = xz -c
+
+[tar "txz"]
+    command = xz -c
+

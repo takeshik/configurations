@@ -3,6 +3,5 @@
 # Usage: ln -s ~/.zsh/._zshenv_ ~/.zshenv
 
 export ZDOTDIR=$HOME/.zsh
-source $ZDOTDIR/.zshenv
 
 # vim:set ft=sh fenc=utf-8 ts=4 sw=4 sts=4 et:

@@ -37,10 +37,7 @@ setopt \
     prompt_subst \
     pushd_minus \
     pushd_ignore_dups \
-    share_history \
 ;
-
-[ -n "`alias run-help`" ] && unalias run-help
 
 autoload -Uz colors; colors
 autoload -Uz compinit; compinit -u
@@ -285,7 +282,7 @@ bindkey "^[^[[B" cdpop
 bindkey -M isearch "^F" history-incremental-pattern-search-backward
 bindkey -M isearch "^J" history-incremental-pattern-search-forward
 
-for f in $ZDOTDIR/rc.d/*(N); do
+for f in $ZDOTDIR/rc.d/*; do
     source $f
 done
 

@@ -31,7 +31,7 @@ fi`
 
 export LESS='-MRx4#4'
 
-for f in $ZDOTDIR/env.d/*(N); do
+for f in $ZDOTDIR/env.d/*; do
     source $f
 done
 

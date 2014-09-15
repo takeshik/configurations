@@ -1,0 +1,10 @@
+# -*- mode: sh; encoding: utf-8; tab-width: 4; indent-tabs-mode: nil; -*-
+
+if where systemctl > /dev/null; then
+    alias sc=systemctl
+    alias sup='systemctl restart'
+    alias sdown='systemctl stop'
+    alias sst='systemctl status'
+fi
+
+# vim:set ft=sh fenc=utf-8 ts=4 sw=4 sts=4 et:
