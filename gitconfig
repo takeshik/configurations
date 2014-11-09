@@ -1,8 +1,3 @@
-[user]
-    name = Takeshi KIRIYA
-    email = takeshik@xspect.org
-    signingkey = CFA8894B
-
 [core]
     autocrlf = input
     excludesfile = ~/.gitignore
@@ -30,9 +25,9 @@
     ca = commit -a
     cam = commit --amend
     co = checkout
-    fe = fetch --recurse-submodules=on-demand
-    up = pull --rebase --recurse-submodules=on-demand
-    pu = push --tags --recurse-submodules=check
+    fe = fetch --all --prune --tags
+    up = !git fetch --all --prune --tags && git rebase --autosquash --autostash
+    pu = push --tags
     di = diff
     ds = diff --staged
     l = log --date=short --format=format:'%C(yellow)%h %Cgreen%ad %Cblue%an%C(red bold)%d %C(white)%s'
@@ -66,4 +61,7 @@
 
 [tar "txz"]
     command = xz -c
+
+[include]
+    path = .gitconfig.local
 
