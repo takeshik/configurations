@@ -26,8 +26,9 @@
     cam = commit --amend
     co = checkout
     fe = fetch --all --prune --tags
-    up = !git fetch --all --prune --tags && git rebase --autosquash --autostash
-    pu = push --tags
+    re = rebase --autosquash --autostash
+    up = !git fe && git re --stat
+    pu = !git push --porcelain origin `git rev-parse --abbrev-ref HEAD`
     di = diff
     ds = diff --staged
     l = log --date=short --format=format:'%C(yellow)%h %Cgreen%ad %Cblue%an%C(red bold)%d %C(white)%s'
@@ -36,6 +37,9 @@
     ll = log --date=iso --format=format:'%C(yellow)%H %Cgreen%ad %Cblue%an%C(red bold)%d%n%C(white bold)%s%n%Creset%w(0,4,4)%b'
     wc = whatchanged --date=iso --format=format:'%C(yellow)%H %Cgreen%ad %Cblue%an%C(red bold)%d%n%C(white bold)%s%n%Creset%w(0,4,4)%b'
     rl = reflog --date=iso --format=format:'%C(yellow)%H %C(green)%gd %Cblue%gn%Cred%d %C(white)%gs'
+    lby = "!f(){ git log --date=iso --format=format:'%C(yellow)%H %Cgreen%ad%C(red bold)%d %C(white)%s' --author=${1:-`git config user.email`};};f"
+    wcby = "!f(){ git whatchanged --date=iso --format=format:'%C(yellow)%H %Cgreen%ad%C(red bold)%d%n%C(white bold)%s%n%Creset%w(0,4,4)%b' --author=${1:-`git config user.email`};};f"
+    rlby = "!f(){ git reflog --date=iso --format=format:'%C(yellow)%H %C(green)%gd%Cred%d %C(white)%gs' --author=${1:-`git config user.email`};};f"
     d = diff
     dm = diff master
     dw = diff --color-words
@@ -48,9 +52,23 @@
     d6 = diff HEAD~~~~~~
     d7 = diff HEAD~~~~~~~
     d8 = diff HEAD~~~~~~~~
+    d9 = diff HEAD~~~~~~~~~
     g = grep -n
     gi = grep -n --ignore-case
     desc = describe --always --dirty
+    r1 = reset HEAD~1
+    r2 = reset HEAD~2
+    r3 = reset HEAD~3
+    r4 = reset HEAD~4
+    r5 = reset HEAD~5
+    r6 = reset HEAD~6
+    r7 = reset HEAD~7
+    r8 = reset HEAD~8
+    r9 = reset HEAD~9
+    r-a = rebase --abort
+    r-c = rebase --continue
+    r-s = rebase --skip
+    cleanall = !git clean -dfx && git reset --hard
 
 [url "git@github.com:"]
     pushinsteadof = "git://github.com/"
@@ -64,4 +82,4 @@
 
 [include]
     path = .gitconfig.local
-
+    
