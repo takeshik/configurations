@@ -73,39 +73,6 @@ TIMEFMT='%J (real: %*E user: %*U sys: %*S cpu: %P pf: %F)'
 watch=(all all)
 WATCHFMT='%n has %a %l from %m at %D %T'
 
-if =ls --version 2>&1 | grep -q GNU; then
-    # GNU userland
-    alias ls='ls -av --color=auto'
-    alias ll='ls -l --time-style=long-iso'
-    alias rm='rm -vr'
-    alias cp='cp -av'
-    alias ln='ln -v'
-    alias mv='mv -v'
-    alias mkdir='mkdir -pv'
-    alias chown='chown -cv'
-    alias chgrp='chgrp -cv'
-    alias chmod='chmod -cv'
-    alias grep='grep -n --color'
-    alias getfacl='getfacl --tabular'
-    alias du1='du --max-depth=1'
-    alias psx='ps -AHo pid,user,group,%cpu,%mem,nlwp,vsize,rssize,tname,stat,ni,start_time,cputime,args'
-    alias watch='watch -c -d -t -n 1'
-else
-    # (should be) BSD userland
-    alias ls='ls -aFG'
-    alias ll='ls -l'
-    alias rm='rm -vr'
-    alias cp='cp -av'
-    alias ln='ln -v'
-    alias mv='mv -v'
-    alias mkdir='mkdir -pv'
-    alias chown='chown -v'
-    alias chgrp='chgrp -v'
-    alias chmod='chmod -v'
-    alias grep='grep -n'
-    alias du1='du -d 1'
-fi
-
 # Common commands
 alias ...='../..'
 alias ....='../../..'
@@ -121,7 +88,7 @@ alias h='history 0'
 alias g='grep'
 alias s='dirs -v'
 alias l='$PAGER'
-alias v='view -'
+alias v='git'
 alias k='kill'
 alias K='kill -KILL'
 alias ka='killall'

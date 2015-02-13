@@ -24,19 +24,22 @@
     ci = commit
     ca = commit -a
     cam = commit --amend
+    cs = commit -a -m 'squash! stub'
     co = checkout
-    fe = fetch --all --prune --tags
+    fe = fetch --all --prune --tags --recurse-submodules=on-demand
     re = rebase --autosquash --autostash
+    ri = !git re -i
     up = !git fe && git re --stat
     pu = !git push --porcelain origin `git rev-parse --abbrev-ref HEAD`
-    di = diff
-    ds = diff --staged
-    l = log --date=short --format=format:'%C(yellow)%h %Cgreen%ad %Cblue%an%C(red bold)%d %C(white)%s'
-    lw = log --date=iso --format=format:'%C(yellow)%H %Cgreen%ad %Cblue%an%C(red bold)%d %C(white)%s'
-    lt = log --graph --date=short --format=format:'%C(yellow)%h %Cgreen%ad %Cblue%an%C(red bold)%d %C(white)%s'
-    ll = log --date=iso --format=format:'%C(yellow)%H %Cgreen%ad %Cblue%an%C(red bold)%d%n%C(white bold)%s%n%Creset%w(0,4,4)%b'
-    wc = whatchanged --date=iso --format=format:'%C(yellow)%H %Cgreen%ad %Cblue%an%C(red bold)%d%n%C(white bold)%s%n%Creset%w(0,4,4)%b'
-    rl = reflog --date=iso --format=format:'%C(yellow)%H %C(green)%gd %Cblue%gn%Cred%d %C(white)%gs'
+    l = log --all --date=short --format=format:'%C(yellow)%h %Cgreen%ad %C(blue bold)%an%C(red bold)%d %C(white)%s'
+    lt = !git lt --graph
+    lw = log --all --date=iso --format=format:'%C(yellow)%H %Cgreen%ad %C(blue bold)%an%C(red bold)%d %C(white)%s'
+    lwt = !git lw --graph
+    ll = log --all --date=iso --format=format:'%C(yellow)%H %Cgreen%ad %C(blue bold)%an%C(red bold)%d%n%C(white bold)%s%n%Creset%w(0,4,4)%b'
+    llt = !git ll --graph
+    wc = whatchanged --date=iso --format=format:'%C(yellow)%H %Cgreen%ad %C(blue bold)%an%C(red bold)%d%n%C(white bold)%s%n%Creset%w(0,4,4)%b'
+    wct = !git wc --graph
+    rl = reflog --date=iso --format=format:'%C(yellow)%H %C(green)%gd %C(blue bold)%gn%Cred%d %C(white)%gs'
     lby = "!f(){ git log --date=iso --format=format:'%C(yellow)%H %Cgreen%ad%C(red bold)%d %C(white)%s' --author=${1:-`git config user.email`};};f"
     wcby = "!f(){ git whatchanged --date=iso --format=format:'%C(yellow)%H %Cgreen%ad%C(red bold)%d%n%C(white bold)%s%n%Creset%w(0,4,4)%b' --author=${1:-`git config user.email`};};f"
     rlby = "!f(){ git reflog --date=iso --format=format:'%C(yellow)%H %C(green)%gd%Cred%d %C(white)%gs' --author=${1:-`git config user.email`};};f"
@@ -70,9 +73,9 @@
     r-s = rebase --skip
     cleanall = !git clean -dfx && git reset --hard
 
-[url "git@github.com:"]
+[url "https://github.com/"]
     pushinsteadof = "git://github.com/"
-    pushinsteadof = "https://github.com/"
+    pushinsteadof = "git@github.com:"
 
 [tar "tar.xz"]
 	command = xz -c
@@ -82,4 +85,3 @@
 
 [include]
     path = .gitconfig.local
-    
