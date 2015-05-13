@@ -39,7 +39,7 @@
     lwt = !git lw --graph
     ll = log --all --date=iso --format=format:'%C(yellow)%H %Cgreen%ad %C(blue bold)%an%C(red bold)%d%n%C(white bold)%s%n%Creset%w(0,4,4)%b'
     llt = !git ll --graph
-    wc = whatchanged --date=iso --format=format:'%C(yellow)%H %Cgreen%ad %C(blue bold)%an%C(red bold)%d%n%C(white bold)%s%n%Creset%w(0,4,4)%b'
+    wc = whatchanged --date=iso --format=format:'%C(yellow)%H %C(red bold)%d%n%C(reset)Author: %C(blue bold)%an%C(blue) <%ae> %Cgreen%ad%n%C(reset)Commit: %C(blue bold)%cn%C(blue) <%ce> %Cgreen%cd%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b'
     wct = !git wc --graph
     rl = reflog --date=iso --format=format:'%C(yellow)%H %C(green)%gd %C(blue bold)%gn%Cred%d %C(white)%gs'
     lby = "!f(){ git log --date=iso --format=format:'%C(yellow)%H %Cgreen%ad%C(red bold)%d %C(white)%s' --author=${1:-`git config user.email`};};f"
