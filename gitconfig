@@ -20,6 +20,7 @@
     st = status -bs
     br = branch -av --list
     rem = remote show origin
+    a = add --interactive
     aa = add -Av
     ci = commit
     ca = commit -a
@@ -29,10 +30,11 @@
     fe = fetch --all --prune --tags --recurse-submodules=on-demand
     re = rebase --autosquash --autostash
     ri = !git re -i
-    up = !git fe && git re --stat
+    up = !git fe && git re --stat && git sup
     pu = !git push --porcelain origin `git rev-parse --abbrev-ref HEAD`
+    sup = submodule update --init --rebase --recursive
     l = log --all --date=short --format=format:'%C(yellow)%h %Cgreen%ad %C(blue bold)%an%C(red bold)%d %C(white)%s'
-    lt = !git lt --graph
+    lt = !git l --graph
     lw = log --all --date=iso --format=format:'%C(yellow)%H %Cgreen%ad %C(blue bold)%an%C(red bold)%d %C(white)%s'
     lwt = !git lw --graph
     ll = log --all --date=iso --format=format:'%C(yellow)%H %Cgreen%ad %C(blue bold)%an%C(red bold)%d%n%C(white bold)%s%n%Creset%w(0,4,4)%b'
