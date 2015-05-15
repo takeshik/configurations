@@ -110,6 +110,7 @@ alias -s rb=ruby
 alias -s exe=mono
 alias -s jar='java -jar'
 alias -s {sln,csproj,vbproj,fsproj}=xbuild
+alias -s git='git cloner'
 
 if where dircolors > /dev/null 2>&1; then
     eval `dircolors \`if [ -f $HOME/.DIR_COLORS ]; then
