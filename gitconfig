@@ -40,10 +40,11 @@
     lwt = !git lw --all --graph
     ll = log --date=iso --format=format:'%C(yellow)%H %C(red bold)%d%n%C(reset)Author: %C(cyan)%ad %C(blue bold)%an%C(reset)%C(blue) <%ae>%n%C(reset)Commit: %C(cyan)%cd %C(blue bold)%cn%C(reset)%C(blue) <%ce>%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b'
     llt = !git ll --all --graph
-    wc = !git ll --stat --no-merges'
+    wc = !git ll --stat --no-merges
     wct = !git wc --all --graph
-    rl = reflog --date=iso --format=format:'%C(yellow)%H %C(cyan)%gd %C(blue bold)%gn%C(red)%d %C(white)%gs'
-    rwc = reflog --date=iso --stat --format=format:'%C(yellow)%H %C(red bold)%d%n%C(reset)By: %C(blue bold)%gn%C(reset)%C(blue) <%ge> %C(cyan)%gd%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b'
+    rl = reflog --date=short --format=format:'%C(yellow)%h %C(cyan)%gd %C(blue bold)%gn%C(red)%d %C(white)%gs'
+    rlw = reflog --date=iso --format=format:'%C(yellow)%H %C(cyan)%gd %C(blue bold)%gn%C(red)%d %C(white)%gs'
+    rwc = reflog --date=iso --stat --format=format:'%C(yellow)%H %C(red bold)%d%n%C(reset)Reflog: %C(cyan)%gd %C(blue bold)%gn%C(reset)%C(blue) <%ge>%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b'
     lby = "!f(){ git log --date=iso --format=format:'%C(yellow)%H %C(cyan)%ad%C(red bold)%d %C(white)%s' --author=${1:-`git config user.email`};};f"
     llby = "!f(){ git log --date=iso --format=format:'%C(yellow)%H%C(reset): %C(cyan)%ad%C(reset) -> %C(cyan)%cd%C(red bold)%d%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b' --author=${1:-`git config user.email`};};f"
     wcby = "!f(){ git log --date=iso --stat --no-merges --format=format:'%C(yellow)%H%C(reset): %C(cyan)%ad%C(reset) -> %C(cyan)%cd%C(red bold)%d%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b' --author=${1:-`git config user.email`};};f"
