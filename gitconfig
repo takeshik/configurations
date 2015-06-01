@@ -76,7 +76,8 @@
     r-a = rebase --abort
     r-c = rebase --continue
     r-s = rebase --skip
-    cleanall = !git clean -dfx && git reset --hard
+    all-reset = !git clean -df && git reset --hard
+    all-clean = !git clean -dfx && git reset --hard
 
 [url "https://github.com/"]
     pushinsteadof = "git://github.com/"
