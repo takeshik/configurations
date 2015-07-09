@@ -1,0 +1,1 @@
+AnsiEsc.vmb: call delete('/home/t.kiriya/.vim/bundle/AnsiEsc//autoload/AnsiEsc.vim')|call delete('/home/t.kiriya/.vim/bundle/AnsiEsc//doc/AnsiEsc.txt')|call delete('/home/t.kiriya/.vim/bundle/AnsiEsc//plugin/cecutil.vim')|call delete('/home/t.kiriya/.vim/bundle/AnsiEsc//plugin/AnsiEscPlugin.vim')

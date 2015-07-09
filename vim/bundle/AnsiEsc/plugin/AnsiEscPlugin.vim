@@ -1,13 +1,13 @@
 " AnsiEscPlugin.vim
-"   Author: Charles E. Campbell, Jr.
+"   Author: Charles E. Campbell
 "   Date:   Apr 07, 2010
-"   Version: 12
+"   Version: 13e
 " ---------------------------------------------------------------------
 "  Load Once: {{{1
 if &cp || exists("g:loaded_AnsiEscPlugin")
  finish
 endif
-let g:loaded_AnsiEscPlugin = "v12"
+let g:loaded_AnsiEscPlugin = "v13e"
 let s:keepcpo              = &cpo
 set cpo&vim
 
@@ -16,11 +16,13 @@ set cpo&vim
 com! -bang -nargs=0 AnsiEsc	:call AnsiEsc#AnsiEsc(<bang>0)
 
 " DrChip Menu Support: {{{2
-if has("gui_running") && has("menu") && &go =~ 'm'
- if !exists("g:DrChipTopLvlMenu")
-  let g:DrChipTopLvlMenu= "DrChip."
+if !exists('g:no_drchip_menu') && !exists('g:no_ansiesc_menu')
+ if has("gui_running") && has("menu") && &go =~ 'm'
+  if !exists("g:DrChipTopLvlMenu")
+   let g:DrChipTopLvlMenu= "DrChip."
+  endif
+  exe 'menu '.g:DrChipTopLvlMenu.'AnsiEsc.Start<tab>:AnsiEsc		:AnsiEsc<cr>'
  endif
- exe 'menu '.g:DrChipTopLvlMenu.'AnsiEsc.Start<tab>:AnsiEsc		:AnsiEsc<cr>'
 endif
 
 " ---------------------------------------------------------------------

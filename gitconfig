@@ -45,7 +45,7 @@
     rl = reflog --date=short --format=format:'%C(yellow)%h %C(cyan)%gd %C(blue bold)%gn%C(red)%d %C(white)%gs'
     rlw = reflog --date=iso --format=format:'%C(yellow)%H %C(cyan)%gd %C(blue bold)%gn%C(red)%d %C(white)%gs'
     rwc = reflog --date=iso --stat --format=format:'%C(yellow)%H %C(red bold)%d%n%C(reset)Reflog: %C(cyan)%gd %C(blue bold)%gn%C(reset)%C(blue) <%ge>%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b'
-    lby = "!f(){ git log --date=iso --format=format:'%C(yellow)%H %C(cyan)%ad%C(red bold)%d %C(white)%s' --author=${1:-`git config user.email`};};f"
+    lby = "!f(){ git log --date=iso --format=format:'%C(yellow)%h %C(cyan)%ad%C(red bold)%d %C(white)%s' --author=${1:-`git config user.email`};};f"
     llby = "!f(){ git log --date=iso --format=format:'%C(yellow)%H%C(reset): %C(cyan)%ad%C(reset) -> %C(cyan)%cd%C(red bold)%d%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b' --author=${1:-`git config user.email`};};f"
     wcby = "!f(){ git log --date=iso --stat --no-merges --format=format:'%C(yellow)%H%C(reset): %C(cyan)%ad%C(reset) -> %C(cyan)%cd%C(red bold)%d%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b' --author=${1:-`git config user.email`};};f"
     d = diff

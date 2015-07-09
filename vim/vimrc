@@ -20,3 +20,5 @@ set shiftwidth=4
 set modeline
 set shortmess+=I
 set bs=indent,eol,start
+
+call pathogen#infect()
