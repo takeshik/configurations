@@ -78,6 +78,7 @@
     r-s = rebase --skip
     all-reset = !git clean -df && git reset --hard
     all-clean = !git clean -dfx && git reset --hard
+    sl = stash list --date=iso --format=format:'%C(yellow)%h %C(cyan)%ad%C(red bold)%d %C(white)%s'
 
 [url "https://github.com/"]
     pushinsteadof = "git://github.com/"
