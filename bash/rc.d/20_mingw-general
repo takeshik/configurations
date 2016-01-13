@@ -4,7 +4,12 @@ if [[ `uname` =~ "MINGW*" ]]; then
     exit 0
 fi
 
-export PS1='\[\033[34;1m\]\w\[\033[;33m\]`__git_ps1`\[\033[0m\] $ '
+if [ -z $SESSIONNAME ]; then
+    export PS1='\[\033[34;1m\]\w\[\033[;33m\]`__git_ps1`\[\033[0m\] # '
+else
+    export PS1='\[\033[34;1m\]\w\[\033[;33m\]`__git_ps1`\[\033[0m\] $ '
+fi
+ 
 
 # http://stackoverflow.com/questions/18641864
 mklink() {

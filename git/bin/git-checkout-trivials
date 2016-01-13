@@ -1,0 +1,4 @@
+#!/bin/bash
+
+git checkout $(git diff --name-only | grep '\\.\\(meta\\|dll\\|pdb\\)$')
+

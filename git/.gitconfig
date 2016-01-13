@@ -28,26 +28,22 @@
     cs = commit -a -m 'squash! stub'
     co = checkout
     fe = fetch --all --prune --tags --recurse-submodules=on-demand
+    ff = "!f(){ git fe && git update-ref refs/heads/${1:-'master'} refs/remotes/origin/${1:-'master'};};f"
     re = rebase --autosquash --autostash
     ri = !git re -i
     up = !git fe && git re --stat && git sup
+    upm = !git fe && git re --stat origin/master && git sup
     pu = !git push --porcelain origin `git rev-parse --abbrev-ref HEAD`
     sup = submodule update --init --rebase --recursive
     upu = !git up && git pu
-    l = log --date=short --format=format:'%C(yellow)%h %C(cyan)%ad %C(blue bold)%an%C(red bold)%d %C(white)%s'
+    l = log --format=format:'%C(yellow)%h %C(cyan)%ad %C(blue bold)%an%C(red bold)%d %C(white)%s'
     lt = !git l --all --graph
-    lw = log --all --date=iso --format=format:'%C(yellow)%H %C(cyan)%ad %C(blue bold)%an%C(red bold)%d %C(white)%s'
-    lwt = !git lw --all --graph
-    ll = log --date=iso --format=format:'%C(yellow)%H %C(red bold)%d%n%C(reset)Author: %C(cyan)%ad %C(blue bold)%an%C(reset)%C(blue) <%ae>%n%C(reset)Commit: %C(cyan)%cd %C(blue bold)%cn%C(reset)%C(blue) <%ce>%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b'
+    ll = log --format=format:'%C(yellow)%H %C(red bold)%d%n%C(reset)Author: %C(cyan)%ad %C(blue bold)%an%C(reset)%C(blue) <%ae>%n%C(reset)Commit: %C(cyan)%cd %C(blue bold)%cn%C(reset)%C(blue) <%ce>%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b'
     llt = !git ll --all --graph
     wc = !git ll --stat --no-merges
     wct = !git wc --all --graph
-    rl = reflog --date=short --format=format:'%C(yellow)%h %C(cyan)%gd %C(blue bold)%gn%C(red)%d %C(white)%gs'
-    rlw = reflog --date=iso --format=format:'%C(yellow)%H %C(cyan)%gd %C(blue bold)%gn%C(red)%d %C(white)%gs'
-    rwc = reflog --date=iso --stat --format=format:'%C(yellow)%H %C(red bold)%d%n%C(reset)Reflog: %C(cyan)%gd %C(blue bold)%gn%C(reset)%C(blue) <%ge>%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b'
-    lby = "!f(){ git log --date=iso --format=format:'%C(yellow)%h %C(cyan)%ad%C(red bold)%d %C(white)%s' --author=${1:-`git config user.email`};};f"
-    llby = "!f(){ git log --date=iso --format=format:'%C(yellow)%H%C(reset): %C(cyan)%ad%C(reset) -> %C(cyan)%cd%C(red bold)%d%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b' --author=${1:-`git config user.email`};};f"
-    wcby = "!f(){ git log --date=iso --stat --no-merges --format=format:'%C(yellow)%H%C(reset): %C(cyan)%ad%C(reset) -> %C(cyan)%cd%C(red bold)%d%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b' --author=${1:-`git config user.email`};};f"
+    rl = reflog --format=format:'%C(yellow)%h %C(cyan)%gd %C(blue bold)%gn%C(red)%d %C(white)%gs'
+    rwc = reflog --stat --format=format:'%C(yellow)%H %C(red bold)%d%n%C(reset)Reflog: %C(cyan)%gd %C(blue bold)%gn%C(reset)%C(blue) <%ge>%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b'
     d = diff
     dm = diff master
     dw = diff --color-words
@@ -78,14 +74,24 @@
     r-s = rebase --skip
     all-reset = !git clean -df && git reset --hard
     all-clean = !git clean -dfx && git reset --hard
-    sl = stash list --date=iso --format=format:'%C(yellow)%h %C(cyan)%ad%C(red bold)%d %C(white)%s'
+    s = show
+    sl = stash list --format=format:'%C(yellow)%h %C(cyan)%ad%C(red bold)%d %C(white)%s'
+    swc = stash list --stat --format=format:'%C(yellow)%H%C(reset): %C(cyan)%ad%C(reset) -> %C(cyan)%cd%C(red bold)%d%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b'
+    spop = stash pop
+    sdrop = stash drop
+    co-trivials = checkout-trivials
+    dby = diff-trivials
+    lby = log-by
+    llby = log-long-by
+    stof = status-of
+    wcby = whatchanged-by
 
 [url "https://github.com/"]
     pushinsteadof = "git://github.com/"
     pushinsteadof = "git@github.com:"
 
 [tar "tar.xz"]
-	command = xz -c
+    command = xz -c
 
 [tar "txz"]
     command = xz -c
