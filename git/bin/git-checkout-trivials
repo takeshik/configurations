@@ -1,4 +1,6 @@
 #!/bin/bash
 
-git checkout $(git diff --name-only | grep '\\.\\(meta\\|dll\\|pdb\\)$')
+for f in `git diff --name-only | grep '\\.\\(meta\\|dll\\|pdb\\)$'`; do
+    git checkout "$f"
+done
 

@@ -15,6 +15,9 @@
     algorithm = histogram
     mnemonicprefix = true
 
+[log]
+    date = format:%y-%m-%d %H:%M:%S
+
 [alias]
     cloner = clone -v --recursive
     st = status -bs
