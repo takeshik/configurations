@@ -1,52 +1,105 @@
 [core]
     excludesfile = ~/.gitignore
 
+[advice]
+    pushUpdateRejected = false
+    statusHints = false
+    detachedHead = false
+
+[branch]
+    autoSetupRebase = always
+
+[diff]
+    renames = copies
+    algorithm = histogram
+    mnemonicprefix = true
+    submodule = log
+    compactionHeuristic = true
+
+[fetch]
+    output = compact
+    prune = true
+
+[grep]
+    lineNumber = true
+
+[log]
+    date = format:%y-%m-%d %H:%M:%S
+    follow = true
+
+[pretty]
+    simple = %C(yellow)%h %C(cyan)%ad %C(blue bold)%an%C(red bold)%d %C(white)%s
+    simple-long  = %C(yellow)%H %C(red bold)%d%n%C(reset)Author: %C(cyan)%ad %C(blue bold)%an%C(reset)%C(blue) <%ae>%n%C(reset)Commit: %C(cyan)%cd %C(blue bold)%cn%C(reset)%C(blue) <%ce>%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b
+    simple-reflog = %C(yellow)%h %C(cyan)%gd %C(blue bold)%gn%C(red)%d %C(white)%gs
+    simple-reflog-long = %C(yellow)%H %C(red bold)%d%n%C(reset)Reflog: %C(cyan)%gd %C(blue bold)%gn%C(reset)%C(blue) <%ge>%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b
+    simple-stash = %C(yellow)%h %C(cyan)%ad%C(red bold)%d %C(white)%s
+    simple-stash-long = %C(yellow)%H%C(reset): %C(cyan)%ad%C(reset) -> %C(cyan)%cd%C(red bold)%d%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b
+
 [pull]
-    rebase = true
+    rebase = preserve
 
 [push]
     default = simple
+    followTags = true
+    recurseSubmodules = on-demand
 
 [rebase]
     autosquash = true
     autostash = true
+    missingCommitsCheck = warn
+    instructionFormat = (%ar) %an <%ae> %s
 
-[diff]
-    algorithm = histogram
-    mnemonicprefix = true
+[status]
+    short = true
+    branch = true
 
-[log]
-    date = format:%y-%m-%d %H:%M:%S
+[submodule]
+    fetchJobs = 0
+
+[tag]
+    sort = -v:refname
+
+[versionsort]
+    prereleaseSuffix = -alpha
+    prereleaseSuffix = -beta
+    prereleaseSuffix = -pre
+    prereleaseSuffix = -rc
 
 [alias]
     cloner = clone -v --recursive
-    st = status -bs
-    br = branch -av --list
-    rem = remote show origin
-    a = add --interactive
+    st = status
+    br = branch
+    bl = branch -vv --list
+    br = branch -avv --list
+    sb = show-branch
+    rr = remote
+    rrl = remote -v
+    rro = remote show origin
+    a = add
+    ai = add --interactive
     aa = add -Av
     ci = commit
     ca = commit -a
     cam = commit --amend
     cs = commit -a -m 'squash! stub'
     co = checkout
-    fe = fetch --all --prune --tags --recurse-submodules=on-demand
+    fe = fetch --all --tags
     ff = "!f(){ git fe && git update-ref refs/heads/${1:-'master'} refs/remotes/origin/${1:-'master'};};f"
-    re = rebase --autosquash --autostash
-    ri = !git re -i
-    up = !git fe && git re --stat && git sup
+    re = rebase --preserve-merges
+    ri = rebase --preserve-merges -i
+    up = pull --all --autostash --stat
     upm = !git fe && git re --stat origin/master && git sup
-    pu = !git push --porcelain origin `git rev-parse --abbrev-ref HEAD`
-    sup = submodule update --init --rebase --recursive
+    pu = push --porcelain origin
+    sup = submodule update --recursive
     upu = !git up && git pu
-    l = log --format=format:'%C(yellow)%h %C(cyan)%ad %C(blue bold)%an%C(red bold)%d %C(white)%s'
-    lt = !git l --all --graph
-    ll = log --format=format:'%C(yellow)%H %C(red bold)%d%n%C(reset)Author: %C(cyan)%ad %C(blue bold)%an%C(reset)%C(blue) <%ae>%n%C(reset)Commit: %C(cyan)%cd %C(blue bold)%cn%C(reset)%C(blue) <%ce>%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b'
-    llt = !git ll --all --graph
-    wc = !git ll --stat --no-merges
-    wct = !git wc --all --graph
-    rl = reflog --format=format:'%C(yellow)%h %C(cyan)%gd %C(blue bold)%gn%C(red)%d %C(white)%gs'
-    rwc = reflog --stat --format=format:'%C(yellow)%H %C(red bold)%d%n%C(reset)Reflog: %C(cyan)%gd %C(blue bold)%gn%C(reset)%C(blue) <%ge>%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b'
+    l = log --format=simple
+    lt = log --format=simple --all --graph
+    ll = log --format=simple-long
+    llt = log --format=simple-long --all --graph
+    wc = log --format=simple-long --stat --no-merges
+    wct = log --format=simple-long --stat --no-merges --all --graph
+    rl = reflog --format=simple-reflog
+    rwc = reflog --stat --format=simple-reflog-long
     d = diff
     dm = diff master
     dw = diff --color-words
@@ -60,8 +113,8 @@
     d7 = diff HEAD~~~~~~~
     d8 = diff HEAD~~~~~~~~
     d9 = diff HEAD~~~~~~~~~
-    g = grep -n
-    gi = grep -n --ignore-case
+    g = grep
+    gi = grep --ignore-case
     desc = describe --always --dirty
     r1 = reset HEAD~1
     r2 = reset HEAD~2
@@ -75,11 +128,13 @@
     r-a = rebase --abort
     r-c = rebase --continue
     r-s = rebase --skip
+    mm = merge origin/master
+    m-a = merge --abort
     all-reset = !git clean -df && git reset --hard
     all-clean = !git clean -dfx && git reset --hard
     s = show
-    sl = stash list --format=format:'%C(yellow)%h %C(cyan)%ad%C(red bold)%d %C(white)%s'
-    swc = stash list --stat --format=format:'%C(yellow)%H%C(reset): %C(cyan)%ad%C(reset) -> %C(cyan)%cd%C(red bold)%d%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b'
+    sl = stash list --format=simple-stash
+    swc = stash list --stat --format=simple-stash-long
     spop = stash pop
     sdrop = stash drop
     co-trivials = checkout-trivials
