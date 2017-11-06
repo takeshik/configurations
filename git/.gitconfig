@@ -1,5 +1,5 @@
 [core]
-    excludesfile = ~/.gitignore
+	excludesfile =
 
 [advice]
     pushUpdateRejected = false
@@ -20,6 +20,9 @@
     output = compact
     prune = true
 
+[gc]
+    auto = 0
+
 [grep]
     lineNumber = true
 
@@ -28,7 +31,7 @@
     follow = true
 
 [pretty]
-    simple = %C(yellow)%h %C(cyan)%ad %C(blue bold)%an%C(red bold)%d %C(white)%s
+    simple = %C(yellow)%h %C(cyan)%ad %C(blue bold)%<(14)%an%C(red bold)%d %C(white)%s
     simple-long  = %C(yellow)%H %C(red bold)%d%n%C(reset)Author: %C(cyan)%ad %C(blue bold)%an%C(reset)%C(blue) <%ae>%n%C(reset)Commit: %C(cyan)%cd %C(blue bold)%cn%C(reset)%C(blue) <%ce>%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b
     simple-reflog = %C(yellow)%h %C(cyan)%gd %C(blue bold)%gn%C(red)%d %C(white)%gs
     simple-reflog-long = %C(yellow)%H %C(red bold)%d%n%C(reset)Reflog: %C(cyan)%gd %C(blue bold)%gn%C(reset)%C(blue) <%ge>%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b
@@ -69,8 +72,7 @@
     cloner = clone -v --recursive
     st = status
     br = branch
-    bl = branch -vv --list
-    br = branch -avv --list
+    lb = branch --format='%(color:yellow)%(objectname:short) %(color:cyan)%(authordate:format:%y-%m-%d %H:%M:%S) %(color:blue bold)%(align:14)%(authorname)%(end)%(color:reset) %(if)%(upstream:trackshort)%(then)%(upstream:trackshort)%(else) %(end)%(color:dim)%(align:13,right)%(refname:rstrip=-2)%(end)/%(color:nodim) %(if)%(HEAD)%(then)%(color:white bold ul)%(else)%(color:white)%(end)%(refname:short)%(color:reset)%(if)%(upstream)%(then) %(color:white dim)[%(color:green)%(upstream:short)%(color:white)%(if)%(upstream:track)%(then): %(upstream:track,nobracket)%(end)]%(end)%(if)%(symref)%(then)%(color:dim) -> %(color:green)%(symref:short)%(end)'
     sb = show-branch
     rr = remote
     rrl = remote -v
@@ -89,13 +91,13 @@
     ri = rebase --preserve-merges -i
     up = pull --all --autostash --stat
     upm = !git fe && git re --stat origin/master && git sup
-    pu = push --porcelain origin
+    pu = !git push --porcelain --set-upstream origin `git symbolic-ref --short HEAD`
     sup = submodule update --recursive
     upu = !git up && git pu
     l = log --format=simple
-    lt = log --format=simple --all --graph
+    lg = log --format=simple --all --graph
     ll = log --format=simple-long
-    llt = log --format=simple-long --all --graph
+    llg = log --format=simple-long --all --graph
     wc = log --format=simple-long --stat --no-merges
     wct = log --format=simple-long --stat --no-merges --all --graph
     rl = reflog --format=simple-reflog
@@ -116,6 +118,7 @@
     g = grep
     gi = grep --ignore-case
     desc = describe --always --dirty
+    lt = tag --format='%(color:yellow)%(objectname:short) %(color:cyan)%(taggerdate:format:%y-%m-%d %H:%M:%S) %(color:blue bold)%(align:15)%(taggername)%(end)%(color:white) %(color:dim)%(align:13,right)%(refname:rstrip=-2)%(end)/%(color:nodim) %(refname:short)'
     r1 = reset HEAD~1
     r2 = reset HEAD~2
     r3 = reset HEAD~3
@@ -138,15 +141,20 @@
     spop = stash pop
     sdrop = stash drop
     co-trivials = checkout-trivials
-    dby = diff-trivials
     lby = log-by
     llby = log-long-by
     stof = status-of
     wcby = whatchanged-by
+    brren = branch-rename
+    brnew = branch-new
+    brcln = branch-delete-merged
 
 [url "https://github.com/"]
     pushinsteadof = "git://github.com/"
     pushinsteadof = "git@github.com:"
+
+[remote "origin"]
+	fetch = +refs/pull/*:refs/remotes/pull/*
 
 [tar "tar.xz"]
     command = xz -c
@@ -155,4 +163,4 @@
     command = xz -c
 
 [include]
-    path = .gitconfig.local
+    path = .local.gitconfig

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+prefix=`git config user.x-branchPrefix`
+
+git branch -m ${prefix}/${1} ${prefix}/${2}

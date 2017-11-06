@@ -1,0 +1,5 @@
+#!/bin/bash
+
+prefix=`git config user.x-branchPrefix`
+
+git checkout -b ${prefix}/${1}
