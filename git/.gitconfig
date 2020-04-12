@@ -1,5 +1,5 @@
 [core]
-    excludesfile = ~/.gitignore
+    excludesfile = ~/.global.gitignore
 
 [advice]
     pushUpdateRejected = false
@@ -15,10 +15,14 @@
     mnemonicprefix = true
     submodule = log
     compactionHeuristic = true
+    colorMoved = dimmed-zebra
 
 [fetch]
     output = compact
     prune = true
+
+[gc]
+    auto = 0
 
 [grep]
     lineNumber = true
@@ -28,12 +32,12 @@
     follow = true
 
 [pretty]
-    simple = %C(yellow)%h %C(cyan)%ad %C(blue bold)%an%C(red bold)%d %C(white)%s
-    simple-long  = %C(yellow)%H %C(red bold)%d%n%C(reset)Author: %C(cyan)%ad %C(blue bold)%an%C(reset)%C(blue) <%ae>%n%C(reset)Commit: %C(cyan)%cd %C(blue bold)%cn%C(reset)%C(blue) <%ce>%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b
-    simple-reflog = %C(yellow)%h %C(cyan)%gd %C(blue bold)%gn%C(red)%d %C(white)%gs
-    simple-reflog-long = %C(yellow)%H %C(red bold)%d%n%C(reset)Reflog: %C(cyan)%gd %C(blue bold)%gn%C(reset)%C(blue) <%ge>%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b
-    simple-stash = %C(yellow)%h %C(cyan)%ad%C(red bold)%d %C(white)%s
-    simple-stash-long = %C(yellow)%H%C(reset): %C(cyan)%ad%C(reset) -> %C(cyan)%cd%C(red bold)%d%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b
+    simple = %C(auto)%h %C(cyan)%ad %C(blue bold)%<(15)%aN%C(auto)%d %C(white)%s
+    simple-long = %C(yellow dim)commit %C(auto)%H%C(auto)%d%n%C(reset)author %C(cyan)%ai %C(blue bold)%an%C(reset)%C(blue) <%ae>%n%C(reset)cmtter %C(cyan)%ci %C(blue bold)%cn%C(reset)%C(blue) <%ce>%n%w(0,4,4)%s%n%w(0,8,8)%b
+    simple-reflog = %C(auto)%h %C(cyan)%gd %C(blue bold)%gn%C(auto)%d %C(white)%gs
+    simple-reflog-long = %C(yellow dim)commit %C(auto)%H%C(auto)%d%n%C(reset)reflog %C(cyan)%gd %C(blue bold)%gn%C(reset)%C(blue) <%ge>%n%w(0,4,4)%gs%n%w(0,8,8)%b
+    simple-stash = %C(auto)%h %C(cyan)%ad%C(auto)%d %C(white)%s
+    simple-stash-long = %C(yellow dim)commit %C(auto)%H%C(auto)%d%C(reset)%n%C(cyan)%ai%C(reset) -> %C(cyan)%ci%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b
 
 [pull]
     rebase = preserve
@@ -47,7 +51,7 @@
     autosquash = true
     autostash = true
     missingCommitsCheck = warn
-    instructionFormat = (%ar) %an <%ae> %s
+    instructionFormat = | %ai | %an <%ae> %s
 
 [status]
     short = true
@@ -66,43 +70,46 @@
     prereleaseSuffix = -rc
 
 [alias]
+    cb = symbolic-ref --short HEAD
+    usb = "!f(){ git rev-parse --abbrev-ref $1@{upstream}; };f"
     cloner = clone -v --recursive
     st = status
     br = branch
-    bl = branch -vv --list
-    br = branch -avv --list
+    lb = br -vv
     sb = show-branch
-    rr = remote
-    rrl = remote -v
-    rro = remote show origin
+    rem = remote show origin
     a = add
     ai = add --interactive
     aa = add -Av
     ci = commit
-    ca = commit -a
+    cs = commit -a -m 'squash!'
     cam = commit --amend
-    cs = commit -a -m 'squash! stub'
+    can = commit --amend --no-edit
+    cp = cherry-pick
+    cp-a = cherry-pick --abort
     co = checkout
     fe = fetch --all --tags
-    ff = "!f(){ git fe && git update-ref refs/heads/${1:-'master'} refs/remotes/origin/${1:-'master'};};f"
-    re = rebase --preserve-merges
-    ri = rebase --preserve-merges -i
+    re = rebase --rebase-merges
+    ri = rebase --rebase-merges -i
     up = pull --all --autostash --stat
-    upm = !git fe && git re --stat origin/master && git sup
-    pu = push --porcelain origin
+    rem = rebase origin/master
+    pu = push
+    put = !git push --porcelain --set-upstream origin `git symbolic-ref --short HEAD`
     sup = submodule update --recursive
-    upu = !git up && git pu
     l = log --format=simple
-    lt = log --format=simple --all --graph
+    lg = log --format=simple --graph
     ll = log --format=simple-long
-    llt = log --format=simple-long --all --graph
+    llg = log --format=simple-long --graph
     wc = log --format=simple-long --stat --no-merges
-    wct = log --format=simple-long --stat --no-merges --all --graph
+    wcg = log --format=simple-long --stat --no-merges --graph
     rl = reflog --format=simple-reflog
-    rwc = reflog --stat --format=simple-reflog-long
+    rll = reflog --format=simple-reflog-long
+    rwc = reflog --format=simple-reflog-long --stat
     d = diff
-    dm = diff master
+    dm = diff origin/master
+    ds = diff --staged
     dw = diff --color-words
+    dws = diff --color-words --staged
     ds = diff --staged
     d1 = diff HEAD~
     d2 = diff HEAD~~
@@ -132,21 +139,15 @@
     m-a = merge --abort
     all-reset = !git clean -df && git reset --hard
     all-clean = !git clean -dfx && git reset --hard
-    s = show
+    s = show --format=simple-long
     sl = stash list --format=simple-stash
     swc = stash list --stat --format=simple-stash-long
     spop = stash pop
     sdrop = stash drop
-    co-trivials = checkout-trivials
-    dby = diff-trivials
-    lby = log-by
-    llby = log-long-by
-    stof = status-of
-    wcby = whatchanged-by
-
-[url "https://github.com/"]
-    pushinsteadof = "git://github.com/"
-    pushinsteadof = "git@github.com:"
+    rz-s = reset --soft
+    rz = reset --mixed
+    rz-h = reset --hard
+    detach = !git checkout $(git rev-parse HEAD)
 
 [tar "tar.xz"]
     command = xz -c
@@ -154,5 +155,80 @@
 [tar "txz"]
     command = xz -c
 
+[color "branch"]
+    plain = normal
+    remote = red
+    local = normal
+    current = green
+    upstream = blue
+    worktree = cyan # not in doc
+
+[color "diff"]
+    context = normal
+    meta = bold
+    frag = cyan
+    old = red
+    new = green
+    commit = yellow
+    whitespace = normal red
+    func = cyan dim # misformatted in doc
+    oldMoved = magenta bold
+    oldMovedAlternative = blue bold
+    oldMovedDimmed = dim
+    oldMovedAlternativeDimmed = dim italic
+    newMoved = cyan bold
+    newMovedAlternative = yellow bold
+    newMovedDimmed = dim
+    newMovedAlternativeDimmed = dim italic
+    contextDimmed = dim
+    oldDimmed = red dim
+    newDimmed = green dim
+    contextBold = bold
+    oldBold = red bold
+    newBold = green bold
+
+[color "decorate"]
+    branch = green bold
+    remoteBranch = red bold
+    tag = yellow bold
+    stash = magenta bold
+    HEAD = cyan bold
+    grafted = blue bold # not in doc
+
+[color "grep"]
+    context = normal
+    filename = white dim
+    function = cyan dim
+    lineNumber = white dim
+    column = white dim
+    matchContext = red
+    matchSelected = red bold
+    selected =
+    separator = dim
+
+[color "interactive"]
+    error = red bold
+    header = bold
+    help = green
+    plain = normal # not in doc
+    prompt = white ul
+    reset = reset # not in doc
+
+[color "remote"]
+    hint = yellow
+    warning = yellow bold
+    success = green
+    error = red
+
+[color "status"]
+    header = normal
+    updated = green
+    changed = red
+    untracked = red
+    nobranch = red
+    unmerged = red
+    localBranch = green
+    remoteBranch = red
+
 [include]
-    path = .gitconfig.local
+    path = ~/.local/.gitconfig

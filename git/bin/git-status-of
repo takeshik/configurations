@@ -1,3 +1,0 @@
-#!/bin/bash
-
-git -c status.relativePaths=true status -s | grep -i "^${1//-/ }" | cut -c 4-

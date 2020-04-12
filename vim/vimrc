@@ -8,7 +8,6 @@ set fileencodings=utf-8
 set autoindent
 set browsedir=buffer
 set nocompatible
-set expandtab
 set incsearch
 set number
 set showmatch
@@ -16,6 +15,7 @@ set smartcase
 set smartindent
 set smarttab
 set tabstop=4
+"set termguicolors
 set shiftwidth=4
 set modeline
 set shortmess+=I

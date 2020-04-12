@@ -1,3 +1,0 @@
-#!/bin/bash
-
-git log --format=format:'%C(yellow)%H%C(reset): %C(cyan)%ad%C(reset) -> %C(cyan)%cd%C(red bold)%d%n%C(white bold)%s%n%C(reset)%w(0,4,4)%b' --author=${1:-`git config user.email`}

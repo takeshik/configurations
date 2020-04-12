@@ -1,9 +1,9 @@
-BoldAsFont=yes
+BoldAsFont=no
 Transparency=high
 CursorType=underscore
 Font=Ricty Diminished
 FontHeight=16
-FontSmoothing=partial
+FontSmoothing=full
 AllowBlinking=yes
 RightClickAction=paste
 Rows=50

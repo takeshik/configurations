@@ -1,3 +1,0 @@
-#!/bin/bash
-
-git show -U0 $(git log --format=format:%H --author=${1:-`git config user.email`})

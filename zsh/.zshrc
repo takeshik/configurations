@@ -1,5 +1,3 @@
-# -*- mode: sh; encoding: utf-8; tab-width: 4; indent-tabs-mode: nil; -*-
-
 setopt \
     always_last_prompt \
     append_history \
@@ -113,11 +111,11 @@ alias -s {sln,csproj,vbproj,fsproj}=xbuild
 alias -s git='git cloner'
 
 if where dircolors > /dev/null 2>&1; then
-    eval `dircolors \`if [ -f $HOME/.DIR_COLORS ]; then
+    eval $(dircolors $(if [ -f $HOME/.DIR_COLORS ]; then
         echo $HOME/.dir_colors
     elif [ -f /etc/DIR_COLORS ]; then
         echo /etc/DIR_COLORS
-    fi\``
+    fi))
 fi
 
 zstyle ':completion:*' completer _complete _expand _list _match _prefix
@@ -140,7 +138,7 @@ function precmd() {
     psvar=()
     LANG=en_US.UTF-8 vcs_info
     [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
-    local dirn=$((`dirs -p | wc -l` - 1))
+    local dirn=$(($(dirs -p | wc -l) - 1))
     [ $dirn -gt 0 ] && psvar[2]=$dirn
 }
 
@@ -174,7 +172,7 @@ function copyclip() {
     elif which putclip > /dev/null 2>&1 ; then
         putclip # Cygwin
     elif which clip > /dev/null 2>&1 ; then
-        putclip # Windows
+        clip # Windows
     else
         $PAGER
     fi
@@ -253,5 +251,3 @@ bindkey -M isearch "^J" history-incremental-pattern-search-forward
 for f in $ZDOTDIR/rc.d/*; do
     source $f
 done
-
-# vim:set ft=sh fenc=utf-8 ts=4 sw=4 sts=4 et:

@@ -1,7 +1,0 @@
-# -*- mode: sh; encoding: utf-8; tab-width: 4; indent-tabs-mode: nil; -*-
-
-if [[ `uname` =~ "MINGW*" ]]; then
-   setopt no_hist_save_by_copy 
-fi
-
-# vim:set ft=sh fenc=utf-8 ts=4 sw=4 sts=4 et:
